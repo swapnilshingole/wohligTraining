@@ -1,5 +1,4 @@
 export default {
-    
     search: async function(_query, callback) {
         const course = await Course.find().exec()
         callback(null, course)
@@ -15,46 +14,40 @@ export default {
         course.save(callback)
     },
 
-    deleteOne :(data, callback) => {
-        Course.findByIdAndRemove({_id: data.id
-        }).exec(callback)
+    deleteOne: (data, callback) => {
+        Course.findByIdAndRemove({ _id: data.id }).exec(callback)
     },
 
-    updateById :(data) => {
-        Course.findByIdAndUpdate(data.params.id, {
-            name   : data.body.name,
-            duration: data.body.duration,
-            seats  : data.body.seats,
-            fees: data.body.fees
-
-        }, {new: true})
-        .then(course => {
-            if(!course) {
-                return res.status(404).send({
-                    message: "Note not found with id " + req.params.id
-                });
-            }
-        //    res.send(course);
-        }).catch(err => {
-            if(err.kind === 'ObjectId') {
-                return res.status(404).send({
-                    message: "Note not found with id " + req.params.id
-                });                
-            }
-            return res.status(500).send({
-                message: "Error updating note with id " + req.params.id
-            });
-        });
+    updateById: (data, callback) => {
+        Course.findByIdAndUpdate(data.params.id, data.body, { new: true }).exec(
+            callback
+        )
     },
 
-    pegination : async function(data, callback) {
-        const resPerPage = 2; // results per page
-        
-        const page = data.params.page; // Page
+    pegination: async function(data, callback) {
+        const resPerPage = 2 // results per page
 
-        const course = await Course.find().skip((resPerPage * page) - resPerPage)
-        .limit(resPerPage) .exec();
-        
+        const page = data.params.page // Page
+
+        const course = await Course.find()
+            .skip(resPerPage * page - resPerPage)
+            .limit(resPerPage)
+            .exec()
+
         callback(null, course)
+    },
+
+    partialUpdate: (data, res) => {
+        for (let [key, value] of Object.entries(data.body)) {
+            const keyValue = `${key}: ${value}`
+            var jsonkey = `${key}`
+            var jsonvalue = `${value}`
+            var obj = {}
+            obj[jsonkey] = jsonvalue
+
+            Course.findByIdAndUpdate(data.params.id, obj, { new: true }).exec(
+                res.callback
+            )
+        }
     }
 }

@@ -9,7 +9,6 @@ router.get("/:id", (req, res) => {
 })
 
 router.post("/", (req, res) => {
-    console.log('req.body',req.body)
     CourseModel.saveData(req.body, res.callback)
 })
 
@@ -19,6 +18,7 @@ router.put("/:id", (req, res) => {
 })
 
 router.patch("/:id", (req, res) => {
+    CourseModel.partialUpdate(req, res)
     res.send(`Path For Id ${req.params.id}`)
 })
 
@@ -27,8 +27,12 @@ router.delete("/:id", (req, res) => {
     res.send(`Delete For Id ${req.params.id}`)
 })
 
-router.get("/courseBy/:page",(req, res) => {
-    
+router.get("/courseBy/:page", (req, res) => {
     CourseModel.pegination(req, res.callback)
 })
+
+router.post("/refmapping/", (req, res) => {
+    CourseModel.saveReferenceData(req.body, res.callback)
+})
+
 export default router
