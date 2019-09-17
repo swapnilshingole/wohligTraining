@@ -1,6 +1,7 @@
 export default {
-    search: async function(_query, callback) {
+    search: async function(_query, res) {
         const course = await Course.find().exec()
+        console.log("response--", res)
         callback(null, course)
     },
 

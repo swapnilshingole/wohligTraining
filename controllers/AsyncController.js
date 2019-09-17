@@ -5,7 +5,6 @@ router.get("/", (req, res) => {
 })
 
 router.get("/:id", (req, res) => {
-    console.log("searchById")
     AsyncModel.searchById(req.params, res.callback)
 })
 
