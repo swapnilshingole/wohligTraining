@@ -1,80 +1,75 @@
 var async = require("async")
 var count = 0
-
-// async.whilst(
-//     function testCondition() {
-//         console.log("count", count)
-//         return count < 5
-//     },
-//     function anotherFunction(callback) {
-//         count++
-//         console.log("hiiiii")
-//         setTimeout(callback, 1000)
-//     },
-//     function callback(err, data) {
-//         if (err) {
-//             console.log("error occured")
-//             return
-//         }
-//         console.log("Data Printing completed")
-//     }
-// )
-
 export default {
-    asyncManipulation: (data, abc) => {
+    // async.whilst(
+    //     function testCondition() {
+    //         console.log("count", count)
+    //         return count < 5
+    //     },
+    //     function anotherFunction(callback) {
+    //         count++
+    //         console.log("hiiiii")
+    //         setTimeout(callback, 1000)
+    //     },
+    //     function callback(err, data) {
+    //         if (err) {
+    //             console.log("error occured")
+    //             return
+    //         }
+    //         console.log("Data Printing completed")
+    //     }
+    // )
+
+    asyncManipulation: function(data, callback) {
         var page = 1
-        var resPerPage = 2
-        var pageCount = true
+        var limit = 2
+        var checkPagination = true
         async.whilst(
-            function testCondition() {
-                console.log("page--" + page)
-                return pageCount
+            function testCondition(callback) {
+                // callback(null, checkPagination)
+                return checkPagination
             },
+
             function(callback) {
                 async.waterfall(
                     [
                         function(callback) {
-                            console.log("callback", callback)
                             callback(null, data)
                         },
                         function(data, callback) {
-                            const student = Student.find()
-                                .skip(resPerPage * page - resPerPage)
-                                .limit(resPerPage)
+                            Student.find()
+                                .skip(page * limit - limit)
+                                .limit(limit)
                                 .exec(callback)
                         },
-                        function(studentArr, callback) {
-                            //  console.log("studentArraySize", studentArr.length)
+                        function(users, callback) {
                             page++
-                            _.each(studentArr, function(student, callback) {
-                                // console.log("methodcalling")
-                                methodeCalling(student)
-                            })
-                            if (studentArr.length != resPerPage) {
-                                pageCount = false
+                            if (users.length < limit) {
+                                checkPagination = false
                             }
-                            //  callback(null, course)
+
+                            async.each(
+                                users,
+                                function(user, callback) {
+                                    AsyncWhilstModel.doFunctinality(
+                                        user,
+                                        callback
+                                    )
+                                },
+                                callback
+                            )
                         }
                     ],
-                    function(err, result) {
-                        // result now equals to 'Task1 and Task2 completed'
-                        // console.log("dddddd")
-                        console.log(result)
-                    }
+                    callback
                 )
-                setTimeout(callback, 1000)
             },
-            function callback(err, data) {
-                if (err) {
-                    console.log("error occured")
-                    return
-                }
-                console.log("Data Printing completed")
+            function(err) {
+                callback(null, null)
             }
         )
+    },
+    doFunctinality: function(user, callback) {
+        console.log(" hii I am " + user.name)
+        callback(null, user)
     }
-}
-function methodeCalling(student) {
-    // console.log("------" + student)
-    console.log("hiiii " + student.name)
 }

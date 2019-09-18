@@ -1,8 +1,8 @@
 export default {
-    search: async function(_query, res) {
-        const course = await Course.find().exec()
-        console.log("response--", res)
-        callback(null, course)
+    search: async function(_query, callback) {
+        const course = await Course.find().exec(callback)
+
+        //  callback(null, course)
     },
 
     getById(data, callback) {
@@ -16,7 +16,11 @@ export default {
     },
 
     deleteOne: (data, callback) => {
-        Course.findByIdAndRemove({ _id: data.id }).exec(callback)
+        console.log("id---", data.id)
+        Course.findByIdAndRemove(
+            { _id: data.id },
+            { useFindAndModify: false }
+        ).exec(callback)
     },
 
     updateById: (data, callback) => {

@@ -1,7 +1,7 @@
 const router = Router()
 
 router.get("/", (req, res) => {
-    CourseModel.search(req.query, res)
+    CourseModel.search(req.query, res.callback)
 })
 
 router.get("/:id", (req, res) => {
