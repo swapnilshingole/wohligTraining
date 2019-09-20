@@ -17,10 +17,7 @@ export default {
 
     deleteOne: (data, callback) => {
         console.log("id---", data.id)
-        Course.findByIdAndRemove(
-            { _id: data.id },
-            { useFindAndModify: false }
-        ).exec(callback)
+        Course.findByIdAndRemove({ _id: data.id }).exec(callback)
     },
 
     updateById: (data, callback) => {

@@ -15,43 +15,59 @@ const adminUrl = "http://localhost:3000/Course"
 /*
  * Test the /POST route
  */
-// describe("/POST course", () => {
-//     it("it should POST a course ", (done) => {
-//         let course = {
-//             name: "IT Engineering",
-//             duration: "3 years",
-//             seats: 60,
-//             fees: 25000
-//         }
-
-//         chai.request(adminUrl)
-//             .post("/")
-//             .send(course)
-//             .end(function(err, res) {
-//                 expect(err).to.be.null
-//                 expect(res).to.have.status(200)
-//                 res.body.should.be.a("object")
-//                 done()
-//             })
-//     })
-// })
+describe("/POST course", () => {
+    // it("it should POST a course ", (done) => {
+    //     let course = {
+    //         name: "IT Engineering",
+    //         duration: "3 years",
+    //         seats: 60,
+    //         fees: 25000
+    //     }
+    //     chai.request(adminUrl)
+    //         .post("/")
+    //         .send(course)
+    //         .end(function(err, res) {
+    //             expect(err).to.be.null
+    //             expect(res).to.have.status(200)
+    //             res.body.should.be.a("object")
+    //             done()
+    //         })
+    // })
+    it("it should not POST a course without missing any one of feild", (done) => {
+        let course = {
+            name: "Mechanical Engineering",
+            duration: "3 years",
+            seats: 60
+            //   fees: 25000
+        }
+        chai.request(adminUrl)
+            .post("/")
+            .send(course)
+            .end(function(err, res) {
+                expect(err).to.be.null
+                expect(res).to.have.status(500)
+                // res.body.should.be.a("object")
+                done()
+            })
+    })
+})
 /*
  * Test the /GET route
  */
-// describe("/GET course Data", () => {
-//     it("it should get a course data Array", (done) => {
-//         setTimeout(done, 300)
-//         chai.request(adminUrl)
-//             .get("/")
-//             .end((err, res) => {
-//                 expect(err).to.be.null
-//                 expect(res).to.have.status(200)
-//                 expect(res.body).to.be.an("array")
-//                 // console.log("All data :", res.body)
-//                 done()
-//             })
-//     })
-// })
+describe("/GET course Data", () => {
+    it("it should get a course data Array", (done) => {
+        //   setTimeout(done, 300)
+        chai.request(adminUrl)
+            .get("/")
+            .end((err, res) => {
+                expect(err).to.be.null
+                expect(res).to.have.status(200)
+                expect(res.body).to.be.an("array")
+                // console.log("All data :", res.body)
+                done()
+            })
+    })
+})
 /*
  * Test the /GET route
  */
@@ -78,7 +94,7 @@ describe("/GET course Data By ID", () => {
         chai.request(adminUrl)
             .get("/" + id)
             .end(function(err, res) {
-                expect(res).to.have.status(404)
+                expect(res).to.have.status(500)
                 done(err)
             })
     })
@@ -86,55 +102,69 @@ describe("/GET course Data By ID", () => {
 // /*
 //  * Test the /PUT route
 //  */
-// describe("/PUT course Data By ID", () => {
-//     it("it should update a course data Object by Id", (done) => {
-//         let id = "5d81b80279147b041aebbdb9"
+describe("/PUT course Data By ID", () => {
+    //     it("it should update a course data Object by Id", (done) => {
+    //         let id = "5d81b80279147b041aebbdb9"
 
-//         chai.request(adminUrl)
+    //         chai.request(adminUrl)
 
-//             .put("/" + id + "")
-//             .send({ name: "Extc Engineering" })
-//             .end(function(err, res) {
-//                 //   expect(err).to.be.null
-//                 expect(res).to.have.status(200)
-//                 //  expect(res.body).to.be.an("object")
-//                 // console.log("single data :", res.body)
-//                 done()
-//             })
-//     })
-// })
+    //             .put("/" + id + "")
+    //             .send({ name: "Extc Engineering" })
+    //             .end(function(err, res) {
+    //                 //   expect(err).to.be.null
+    //                 expect(res).to.have.status(200)
+    //                 //  expect(res.body).to.be.an("object")
+    //                 // console.log("single data :", res.body)
+    //                 done()
+    //             })
+    //     })
+
+    it("it should not update a course data Object by wrong Id", (done) => {
+        let id = "12345"
+
+        chai.request(adminUrl)
+
+            .put("/" + id + "")
+            .send({ name: "Extc Engineering" })
+            .end(function(err, res) {
+                //   expect(err).to.be.null
+                expect(res).to.have.status(500)
+                //  expect(res.body).to.be.an("object")
+                // console.log("single data :", res.body)
+                done()
+            })
+    })
+})
 // /*
 //  * Test the /DELETE route
 //  */
-// describe("/DELETE course Data By ID", () => {
-//     it("it should delete a course data Object by Id", (done) => {
-//         let id = "5d809e4d4f470707c975637b"
+describe("/DELETE course Data By ID", () => {
+    // it("it should delete a course data Object by Id", (done) => {
+    //     let id = "5d83477b78598806c4625950"
 
-//         chai.request(adminUrl)
+    //     chai.request(adminUrl)
 
-//             .delete("/" + id + "")
+    //         .delete("/" + id + "")
 
-//             .end(function(err, res) {
-//                 expect(err).to.be.null
-//                 //    expect(res).to.have.status(200)
-//                 //  expect(res.body).to.be.an("object")
-//                 // console.log("single data :", res.body)
-//                 done()
-//             })
-//     })
-// })
+    //         .end(function(err, res) {
+    //             //  expect(err).to.be.null
+    //             expect(res).to.have.status(200)
+    //             //  expect(res.body).to.be.an("object")
+    //             // console.log("single data :", res.body)
+    //             done()
+    //         })
+    // })
 
-// describe("DELETE BY ID", () => {
-//     it("should get delete teachers record by ID", (done) => {
-//         let id = "5d81b80279147b041aebbdb9"
+    it("it should not delete teachers record by wrong ID", (done) => {
+        let id = "846jkh"
 
-//         chai.request(adminUrl)
-//             .delete("/" + id + "")
-//             // .send({'name': 'john'})
-//             .end((err, res) => {
-//                 // console.log("data displayed",res.body)
-//                 expect(res.body).to.be.an("object")
-//                 done()
-//             })
-//     })
-// })
+        chai.request(adminUrl)
+            .delete("/" + id)
+            // .send({'name': 'john'})
+            .end((err, res) => {
+                // console.log("data displayed",res.body)
+                expect(res).to.have.status(500)
+                done()
+            })
+    })
+})

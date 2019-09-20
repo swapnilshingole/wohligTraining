@@ -1,7 +1,7 @@
 var schema = new Schema({
-    name: String,
-    duration: String,
-    seats: Number,
-    fees: Number
+    name: { type: String, required: true },
+    duration: { type: String, rrequired: true },
+    seats: { type: Number, required: true },
+    fees: { type: Number, required: true }
 })
 export default mongoose.model("Course", schema)

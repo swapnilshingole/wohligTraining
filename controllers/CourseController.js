@@ -10,11 +10,12 @@ router.get("/:id", (req, res) => {
 
 router.post("/", (req, res) => {
     CourseModel.saveData(req.body, res.callback)
+    console.log("post res status", res.statusCode)
 })
 
 router.put("/:id", (req, res) => {
     CourseModel.updateById(req, res.callback)
-    res.send(`Update For Id ${req.params.id}`)
+    //  res.send(`Update For Id ${req.params.id}`)
 })
 
 router.patch("/:id", (req, res) => {
@@ -24,7 +25,7 @@ router.patch("/:id", (req, res) => {
 
 router.delete("/:id", (req, res) => {
     CourseModel.deleteOne(req.params, res.callback)
-    res.send(`Delete For Id ${req.params.id}`)
+    //  res.send(`Delete For Id ${req.params.id}`)
 })
 
 router.get("/courseBy/:page", (req, res) => {
